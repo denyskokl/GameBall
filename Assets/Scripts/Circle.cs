@@ -30,6 +30,14 @@ public class Circle : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    void Update()
+    {
+        if(GamePlayController.Instance.isPause)
+        {
+            ResetItem();
+        }
+    }
+
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.name.Equals("BottomLine"))
@@ -42,6 +50,11 @@ public class Circle : MonoBehaviour
     public void Push()
     {
         GamePlayController.Instance.UpdateScore(_points);
+        ResetItem();
+    }
+
+    public void ResetItem()
+    {
         _spriteRenderer.enabled = false;
         _collider.enabled = false;
     }

@@ -42,6 +42,7 @@ public class GeneratorItems : MonoBehaviour
 
     public void Generate()
     {
+        if (GamePlayController.Instance.isPause) return;
         _randowValue = Random.Range(0.1f, 3f);
         foreach (var item in _objects)
         {
@@ -55,4 +56,6 @@ public class GeneratorItems : MonoBehaviour
             }
         }
     }
+
+  
 }
