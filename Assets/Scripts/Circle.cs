@@ -19,6 +19,8 @@ public class Circle : MonoBehaviour
 
     private int _points;
 
+    private float factore = 1f;
+
     void Awake()
     {
         _collider = GetComponent<Collider2D>();
@@ -28,13 +30,15 @@ public class Circle : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        factore = factore / GamePlayController.Level;
+        Debug.Log(factore + " factore " + GamePlayController.Level + " level");
     }
 
     void Update()
     {
-        if(GamePlayController.Instance.isPause)
+        if (GamePlayController.Instance.IsPause)
         {
-            ResetItem();
+            DisableItem();
         }
     }
 
@@ -43,43 +47,41 @@ public class Circle : MonoBehaviour
         if (collision.name.Equals("BottomLine"))
         {
             isReady = true;
-            _collider.enabled = true;
+            _rb.isKinematic = true;
         }
     }
 
     public void Push()
     {
         GamePlayController.Instance.UpdateScore(_points);
-        ResetItem();
+        DisableItem();
     }
 
-    public void ResetItem()
+    public void DisableItem()
     {
+        isReady = true;
         _spriteRenderer.enabled = false;
         _collider.enabled = false;
     }
 
     public void Init(float _minValue, float _maxValue)
     {
+        _rb.isKinematic = false;
+        _collider.enabled = true;
         _spriteRenderer.enabled = true;
         _points = 0;
         _random = Random.Range(_minValue, _maxValue);
-        RandomColor();
-        RandomSize(_minValue, _maxValue, _random);
+        InitRandomItem(_minValue, _maxValue, _random);
         _rb.velocity = Vector3.zero;
     }
 
-
-    public void RandomColor()
+    public void InitRandomItem(float _minValue, float _maxValue, float random)
     {
         _spriteRenderer.enabled = true;
-        _spriteRenderer.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
-    }
-
-    public void RandomSize(float _minValue, float _maxValue, float random)
-    {
         _spriteRenderer.transform.localScale = new Vector3(random, random, 0);
-        _rb.drag = _random * drag;
+        _spriteRenderer.color = new Color(Random.Range(0f, random), Random.Range(0f, random), Random.Range(0f, random), 1f);
+        _rb.drag = _random / drag* factore;
         _points = Mathf.RoundToInt(_defaultScore / random);
+        Debug.Log(_rb.drag + " drag");
     }
 }

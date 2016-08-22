@@ -42,8 +42,9 @@ public class GeneratorItems : MonoBehaviour
 
     public void Generate()
     {
-        if (GamePlayController.Instance.isPause) return;
-        _randowValue = Random.Range(0.1f, 3f);
+        if (GamePlayController.Instance.IsPause) return;
+        _randowValue = Random.Range(0.1f, 3f / GamePlayController.Level);
+
         foreach (var item in _objects)
         {
             if (item.isReady)

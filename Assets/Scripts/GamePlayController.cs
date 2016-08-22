@@ -10,15 +10,23 @@ public class GamePlayController : MonoBehaviour
     private Text _timerText;
 
     [SerializeField]
-
     private GameObject _gameWindow;
-   
-    public int Score;
 
-    public bool isPause = false;
+    [SerializeField]
+    private GameObject _lvlUpWindow;
+
+    [SerializeField]
+    private Text _currentLevel;
+
+    private int _score;
+
+    public bool IsPause = false;
 
     public static GamePlayController Instance;
 
+    public static int Level = 1;
+
+    public static int Score;
 
     void Awake()
     {
@@ -30,15 +38,18 @@ public class GamePlayController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
     }
     void Start()
     {
+        _currentLevel.text = string.Format("Level {0}", Level + 1);
         ResetData();
+        Score += 100;
     }
 
     void Update()
     {
-        if (isPause) return;
+        if (IsPause) return;
         _timerText.text = string.Format("{0}", (int)Time.timeSinceLevelLoad);
         if (Input.GetMouseButtonDown(0))
         {
@@ -50,31 +61,50 @@ public class GamePlayController : MonoBehaviour
                 hit.collider.GetComponent<Circle>().Push();
             }
         }
+        if(Score <= _score)
+        {
+            LevelUpOpenWindow();
+        }
     }
 
     public void ResetData()
     {
         _scoreText.text = "0";
         _timerText.text = "0";
-        
-        Score = 0;
+
+        _score = 0;
+       
     }
 
     public void UpdateScore(int points)
     {
-        Score += points;
-        _scoreText.text = Score.ToString();
+        _score += points;
+        _scoreText.text = _score.ToString();
     }
-    public void PauseGame()
+    public void PauseGame(GameObject window)
     {
-        isPause = true;
+        IsPause = true;
         ResetData();
-        _gameWindow.SetActive(true);
+        window.SetActive(true);
     }
 
-    public void PLayLevel()
+    public void PlayLevel()
     {
+        Debug.Log(Level + " level");
         Application.LoadLevel(Application.loadedLevelName);
     }
+
+    public void LevelUpOpenWindow()
+    {
+        Level++;
+        
+        PauseGame(_lvlUpWindow);
+    }
+
+    public void LvlUp()
+    {
+        PlayLevel();
+    }
+
 
 }
