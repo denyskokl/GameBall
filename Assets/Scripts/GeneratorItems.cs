@@ -47,9 +47,9 @@ public class GeneratorItems : MonoBehaviour
 
         foreach (var item in _objects)
         {
-            if (item.isReady)
+            if (item.IsReady)
             {
-                item.isReady = false;
+                item.IsReady = false;
                 float posX = Random.Range(_cameraBorder.x, -_cameraBorder.x);
                 item.Init(_minValue, _maxValue);
                 item.transform.position = new Vector3(posX, _cameraBorder.y + 2f, 0);
@@ -57,6 +57,4 @@ public class GeneratorItems : MonoBehaviour
             }
         }
     }
-
-  
 }

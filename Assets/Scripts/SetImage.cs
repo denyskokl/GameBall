@@ -1,50 +1,50 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class SetImage : MonoBehaviour {
+public class SetImage : MonoBehaviour
+{
 
-	[SerializeField]
-	private GameObject _bg;
-	private SpriteRenderer _sprite;
+    [SerializeField]
+    private GameObject _bg;
 
-	void Awake()
-	{
-		_sprite = _bg.GetComponent<SpriteRenderer> ();
-	}
+    private SpriteRenderer _sprite;
 
-	void Start () {
+    void Awake()
+    {
+        _sprite = _bg.GetComponent<SpriteRenderer>();
+    }
 
-		var loadBg = LoadBackgrounds.ins;
-		if (loadBg.listTextures != null && loadBg.listTextures.Count > 0) {
-			SetImages ();
-			return;
-		}
+    void Start()
+    {
+        var loadBg = LoadBackgrounds.Instance;
+        if (loadBg.ListTextures != null && loadBg.ListTextures.Count > 0)
+        {
+            SetImages();
+            return;
+        }
+        else
+        {
+            loadBg.LoadImages(() =>
+           {
+               SetImages();
+           });
+        }
+    }
 
-		else {
-			loadBg.LoadImages (() =>
-			{
-				SetImages();	
-			});
-		}
-	}
+    void SetImages()
+    {
+        var listTextures = LoadBackgrounds.Instance.ListTextures;
+        _sprite.sprite = listTextures[Random.Range(0, listTextures.Count)];
 
-	void SetImages()
-	{
-		var listTextures = LoadBackgrounds.ins.listTextures;
-		_sprite.sprite = listTextures [UnityEngine.Random.Range (0, listTextures.Count + 1)];
-	
-		transform.localScale = Vector3.one;
+        transform.localScale = Vector3.one;
 
-		var width = _sprite.sprite.bounds.size.x;
-		var height = _sprite.sprite.bounds.size.y;
+        var width = _sprite.sprite.bounds.size.x;
+        var height = _sprite.sprite.bounds.size.y;
+        _sprite.sortingOrder = -1;
+        var worldScreenHeight = Camera.main.orthographicSize * 2.0;
+        var worldScreenWidth = worldScreenHeight / Screen.height * Screen.width;
 
-		var worldScreenHeight = Camera.main.orthographicSize * 2.0;
-		var worldScreenWidth = worldScreenHeight / Screen.height * Screen.width;
-
-		var posX = (float)(worldScreenWidth / width);
-		var posY = (float)(worldScreenHeight / height);
-
-		transform.localScale = new Vector3 (posX, posY, 0f);
-
-	}
+        var posX = (float)(worldScreenWidth / width);
+        var posY = (float)(worldScreenHeight / height);
+        transform.localScale = new Vector3(posX, posY, 0f);
+    }
 }

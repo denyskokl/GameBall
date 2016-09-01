@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Circle : MonoBehaviour
 {
-    public bool isReady = false;
+    public bool IsReady = false;
 
     private Rigidbody2D _rb;
 
@@ -11,7 +10,7 @@ public class Circle : MonoBehaviour
 
     private Collider2D _collider;
 
-    private float drag = 5;
+    private float _drag = 5;
 
     private float _random;
 
@@ -19,7 +18,7 @@ public class Circle : MonoBehaviour
 
     private int _points;
 
-    private float factore = 1f;
+    private float _factore = 1f;
 
     void Awake()
     {
@@ -30,8 +29,7 @@ public class Circle : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        factore = factore / GamePlayController.Level;
-        Debug.Log(factore + " factore " + GamePlayController.Level + " level");
+        _factore = _factore / GamePlayController.Level;
     }
 
     void Update()
@@ -46,7 +44,7 @@ public class Circle : MonoBehaviour
     {
         if (collision.name.Equals("BottomLine"))
         {
-            isReady = true;
+            IsReady = true;
             _rb.isKinematic = true;
         }
     }
@@ -59,7 +57,7 @@ public class Circle : MonoBehaviour
 
     public void DisableItem()
     {
-        isReady = true;
+        IsReady = true;
         _spriteRenderer.enabled = false;
         _collider.enabled = false;
     }
@@ -80,8 +78,7 @@ public class Circle : MonoBehaviour
         _spriteRenderer.enabled = true;
         _spriteRenderer.transform.localScale = new Vector3(random, random, 0);
         _spriteRenderer.color = new Color(Random.Range(0f, random), Random.Range(0f, random), Random.Range(0f, random), 1f);
-        _rb.drag = _random / drag* factore;
+        _rb.drag = _random / _drag * _factore;
         _points = Mathf.RoundToInt(_defaultScore / random);
-        Debug.Log(_rb.drag + " drag");
     }
 }

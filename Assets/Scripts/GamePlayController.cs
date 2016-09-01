@@ -6,6 +6,7 @@ public class GamePlayController : MonoBehaviour
 {
     [SerializeField]
     private Text _scoreText;
+
     [SerializeField]
     private Text _timerText;
 
@@ -38,7 +39,7 @@ public class GamePlayController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
     }
     void Start()
     {
@@ -61,7 +62,7 @@ public class GamePlayController : MonoBehaviour
                 hit.collider.GetComponent<Circle>().Push();
             }
         }
-        if(Score <= _score)
+        if (Score <= _score)
         {
             LevelUpOpenWindow();
         }
@@ -71,9 +72,7 @@ public class GamePlayController : MonoBehaviour
     {
         _scoreText.text = "0";
         _timerText.text = "0";
-
         _score = 0;
-       
     }
 
     public void UpdateScore(int points)
@@ -90,14 +89,12 @@ public class GamePlayController : MonoBehaviour
 
     public void PlayLevel()
     {
-        Debug.Log(Level + " level");
         Application.LoadLevel(Application.loadedLevelName);
     }
 
     public void LevelUpOpenWindow()
     {
         Level++;
-        
         PauseGame(_lvlUpWindow);
     }
 
@@ -105,6 +102,4 @@ public class GamePlayController : MonoBehaviour
     {
         PlayLevel();
     }
-
-
 }
